@@ -27,11 +27,20 @@ module Vagrant
             @machine.communicate.sudo("hostname -I") do |type, data| 
               @ip = data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
             end
-            @ip.map!{|ip| Ip.new(ip) }
+            @ip.map!{|ip| if ip then Ip.new(ip) else false end}.compact!
           end
 
+          @ip.compact!
+
+          puts "xxxx"
+          puts @ip
+          puts "---"
+          puts @ip.count
+          puts "xxxx"
+
+
           # is there a ip?
-          if @ip && @ip.count > 0
+          if @ip.count > 0
 
             # update dnsmasq.conf
             brew_prefix = `brew --prefix`
@@ -40,13 +49,13 @@ module Vagrant
 
             dnsmasq = DnsmasqConf.new(dnsmasq_conf_file)
             @ip.each do |ip|
-              dnsmasq.insert(domain, ip)
+              dnsmasq.insert(@machine.config.dnsmasq.domain, ip)
             end
             
             # update /etc/resolver
             resolver = Resolver.new('/etc/resolver')
             @ip.each do |ip|
-              resolver.insert(domain, ip)
+              resolver.insert(@machine.config.dnsmasq.domain, ip)
             end
 
             env[:ui].info "Added domain #{@machine.config.dnsmasq.domain} for IP #{ip}"
