@@ -1,5 +1,7 @@
-require "helper.rb"
-require "Domain.class.rb"
+inc_path = Pathname.new(File.expand_path("../includes", __FILE__))
+require inc_path.join("helper.rb")
+require inc_path.join("Domain.class.rb")
+require inc_path.join("Ip.class.rb")
 
 class Dnsmasq
 
@@ -11,22 +13,14 @@ class Dnsmasq
     @filename = filename
   end
 
-  def list
-    domains = []
-    File.open(@filename, "r").each_line do |l|
-      match = /^address=\/(.*)\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/.match(l.strip.chomp)
-      domains.push(Domain.new(match[1])) if match
-    end    
-    return domains
-  end
-
   def insert(domain, ip)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
+    raise ArgumentError, 'invalid ip instance' unless ip.is_a? Ip
 
-    delete(domain) # remove duplicates
+    delete(domain) if includes?(domain)
 
     File.open(@filename, 'a') { |file|
-      file.write "\naddress=/#{domain.dotted}/#{ip}"
+      file.write "\naddress=/#{domain.dotted}/#{ip.v4}"
     }
   end
 
@@ -34,7 +28,7 @@ class Dnsmasq
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
     File.open(@filename, "r").each_line do |l|
-      return true if(l.strip.gsub(/ /, '') == "address=/#{domain.dotted}/127.0.0.1")
+      return true if Regexp.new("address=/\.#{domain.name}").match(l.strip)
     end
     return false
   end
@@ -42,7 +36,7 @@ class Dnsmasq
   def delete(domain)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
-    delete_line_from_file(@filename, "address=/#{domain.dotted}/127.0.0.1")
+    delete_line_from_file(@filename, Regexp.new("address=/\.#{domain.name}"))
   end
 
 

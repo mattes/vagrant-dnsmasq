@@ -1,5 +1,3 @@
-require "helper.rb"
-
 class Domain
 
   MATCH = "/^\.?[a-z]*$/"
@@ -8,26 +6,22 @@ class Domain
     @name = nil
 
     if name.is_a? Domain
-      @name = name
+      @name = name.dotted
       return
     end
 
-    raise ArgumentError, "no domain name given" if name.blank?
+    raise ArgumentError, "no domain name given" unless name
 
     # parse domain name ...
     name = name.to_s
     name = name[1..-1] if name.start_with? '.'
     name = name.downcase
-    raise ArgumentError, "Domain '#{name}' must match /^[a-z]*$/" unless /^[a-z]*$/.match(name)
+    raise ArgumentError, "Domain '#{name}' must match #{MATCH}" unless Domain::valid?(name)
     @name = name # without leading .   
   end
 
   def self.valid?(name)
-    if name.blank? or not /^\.?[a-z]*$/.match(name.downcase)
-      return false
-    else
-      return true
-    end
+    name and MATCH.match(name.downcase)
   end
 
   def dotted

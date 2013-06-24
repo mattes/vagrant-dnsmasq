@@ -18,29 +18,30 @@ class Resolver
     Dir["#{@dirname}/*"].map{|dir| '.' + File.basename(dir)}
   end
 
-  def insert(domain, sudo = false)
+  def insert(domain, ip)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
-    unless includes?(domain)
-      info("You may be asked for your password to insert #{@dirname}/#{domain.name}") if sudo
-      System2.new("#{'sudo' if sudo} sh -c \"echo 'nameserver 127.0.0.1' >> #{@dirname}/#{domain.name}\"").rife
-      Resolver::flush_cache!
-    end
+    delete(domain) if includes?(domain)
+
+    puts "You may be asked for your password to insert #{@dirname}/#{domain.name}"
+    system("sudo sh -c \"echo 'nameserver #{ip.v4}' >> #{@dirname}/#{domain.name}\"")
+    Resolver::flush_cache!
+
   end
 
-  def delete(domain, sudo = false)
+  def delete(domain)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
     if includes? domain
-      info("You may be asked for your password to delete #{@dirname}/#{domain.name}") if sudo
-      System2.new("#{'sudo' if sudo} rm #{@dirname}/#{domain.name}").rife
+      puts "You may be asked for your password to delete #{@dirname}/#{domain.name}"
+      system("sudo rm -rf #{@dirname}/#{domain.name}")
       Resolver::flush_cache!
     end
   end
 
   def includes?(domain)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
-    
+
     File.exists? "#{@dirname}/#{domain.name}"
   end
 
