@@ -5,7 +5,7 @@ Vagrant.require_plugin('vagrant-dnsmasq')
 
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
-  config.vm.box_url = 'http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-vagrant-amd64-disk1.box'
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   # config.vm.network :private_network, ip: "192.168.59.100"
   config.vm.network :public_network

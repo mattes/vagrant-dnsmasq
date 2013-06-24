@@ -1,3 +1,5 @@
+require "includes/Domain.class.rb"
+
 module Vagrant
   module Dnsmasq
     class Config < Vagrant.plugin("2", :config)
@@ -18,6 +20,8 @@ module Vagrant
         @enable = false if @enable == UNSET_VALUE
         @domain = nil if @domain == UNSET_VALUE
         @ip = nil if @ip == UNSET_VALUE
+
+        @domain = Domain.new @domain # make it a Domain instance
       end
 
     end
