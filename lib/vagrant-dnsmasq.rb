@@ -3,13 +3,11 @@ require "vagrant-dnsmasq/version"
 
 module Vagrant
   module Dnsmasq
-    lib_path = Pathname.new(File.expand_path("../vagrant-dnsmasq", __FILE__))
-
     class Plugin < Vagrant.plugin("2")
-      name "dnsmasq"
+      name "vagrant-dnsmasq"
 
-      command "dns" do
-        require lib_path.join("command")
+      command "dnsmasq" do
+        require "vagrant-dnsmasq/command"
         Command
       end
 

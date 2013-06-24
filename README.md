@@ -1,29 +1,14 @@
-# Vagrant::Dnsmasq
+vagrant-dnsmasq
+===============
 
-TODO: Write a gem description
+A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'vagrant-dnsmasq'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install vagrant-dnsmasq
-
 ## Usage
 
-TODO: Write usage instructions here
 
-## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+## Alternatives
+
+ * [vagrant-dns](https://github.com/BerlinVagrant/vagrant-dns) similar plugin but different approach.
