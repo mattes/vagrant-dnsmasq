@@ -3,11 +3,39 @@ vagrant-dnsmasq
 
 A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system.
 
+## Prerequisites
+ * Mac OS X Mountain Lion
+ * [brew](http://mxcl.github.io/homebrew/)
+ * [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) ```brew install dnsmasq```
 
 ## Installation
+```
+vagrant plugin install vagrant-dnsmasq
+```
 
 ## Usage
+in your Vagrantfile
+```
+# dnsmasq ...
 
+# enable dnsmasq?
+# set to false or delete line to disable dnsmasq handling
+config.dnsmasq.enable = true
+
+# set domain ending
+config.dnsmasq.domain = '.dev'
+
+# this plugin runs 'hostname -I' on the guest machine to obtain
+# the guest ip address. you could overwrite the ip here. optional.
+# config.dnsmasq.ip = '192.168.59.100'
+```
+
+## Uninstall
+```
+vagrant plugin uninstall vagrant-dnsmasq
+```
+
+Verify ```/etc/resolver``` and ```$(brew --prefix)/etc/dnsmasq.conf```.
 
 
 ## Alternatives

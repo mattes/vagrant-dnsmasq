@@ -28,7 +28,7 @@ module Vagrant
         
         # make it an Ip instance
         @ip = [@ip] unless @ip.kind_of? Array
-        @ip.map!{|ip| Ip.new(ip) }
+        @ip.map!{|ip| if ip then Ip.new(ip) else false end}.compact!
 
       end
 

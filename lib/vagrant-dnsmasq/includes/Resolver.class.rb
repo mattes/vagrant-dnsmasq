@@ -1,5 +1,3 @@
-require "helper.rb"
-
 class Resolver
 
   attr_reader :dirname

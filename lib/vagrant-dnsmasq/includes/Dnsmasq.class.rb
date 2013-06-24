@@ -1,9 +1,4 @@
-inc_path = Pathname.new(File.expand_path("../includes", __FILE__))
-require inc_path.join("helper.rb")
-require inc_path.join("Domain.class.rb")
-require inc_path.join("Ip.class.rb")
-
-class Dnsmasq
+class DnsmasqConf
 
   attr_reader :filename
 

@@ -38,7 +38,7 @@ module Vagrant
             brew_prefix.strip!
             dnsmasq_conf_file = brew_prefix + "/etc/dnsmasq.conf"
 
-            dnsmasq = Dnsmasq.new(dnsmasq_conf_file)
+            dnsmasq = DnsmasqConf.new(dnsmasq_conf_file)
             @ip.each do |ip|
               dnsmasq.insert(domain, ip)
             end

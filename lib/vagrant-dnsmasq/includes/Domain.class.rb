@@ -1,6 +1,6 @@
 class Domain
 
-  MATCH = "/^\.?[a-z]*$/"
+  MATCH = /^\.?[a-z]*$/
 
   def initialize(name)
     @name = nil
@@ -21,7 +21,7 @@ class Domain
   end
 
   def self.valid?(name)
-    name and MATCH.match(name.downcase)
+    Domain::MATCH.match(name.downcase)
   end
 
   def dotted
