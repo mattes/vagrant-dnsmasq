@@ -27,17 +27,8 @@ module Vagrant
             @machine.communicate.sudo("hostname -I") do |type, data| 
               @ip = data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
             end
-            @ip.map!{|ip| if ip then Ip.new(ip) else false end}.compact!
+            @ip.map!{|ip| begin Ip.new(ip) rescue nil end}.compact!
           end
-
-          @ip.compact!
-
-          puts "xxxx"
-          puts @ip
-          puts "---"
-          puts @ip.count
-          puts "xxxx"
-
 
           # is there a ip?
           if @ip.count > 0
@@ -58,7 +49,7 @@ module Vagrant
               resolver.insert(@machine.config.dnsmasq.domain, ip)
             end
 
-            env[:ui].info "Added domain #{@machine.config.dnsmasq.domain} for IP #{ip}"
+            env[:ui].info "Added domain #{@machine.config.dnsmasq.domain} for IP #{@ip}"
             @app.call(env)
           end
         end

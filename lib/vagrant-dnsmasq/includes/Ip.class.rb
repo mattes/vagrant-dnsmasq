@@ -17,4 +17,8 @@ class Ip
     @ipv4
   end
 
+  def to_s
+    v4
+  end
+
 end

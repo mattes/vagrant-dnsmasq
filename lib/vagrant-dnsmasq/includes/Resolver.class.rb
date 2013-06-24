@@ -21,7 +21,7 @@ class Resolver
 
     delete(domain) if includes?(domain)
 
-    puts "You may be asked for your password to insert #{@dirname}/#{domain.name}"
+    puts "You may be asked for your password to insert #{@dirname}/#{domain.name} (ip: #{ip})"
     system("sudo sh -c \"echo 'nameserver #{ip.v4}' >> #{@dirname}/#{domain.name}\"")
     Resolver::flush_cache!
 
