@@ -7,12 +7,21 @@ Vagrant.configure('2') do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-vagrant-amd64-disk1.box'
 
+  # config.vm.network :private_network, ip: "192.168.59.100"
+  config.vm.network :public_network
 
-  config.vm.hostname = 'myhost'
 
+  # dnsmasq ...
+
+  # enable dnsmasq?
+  # set to false or delete line to disable dnsmasq handling
+  config.dnsmasq.enable = true
+
+  # set domain ending
   config.dnsmasq.domain = '.dev'
 
-  # optional
-  config.dnsmasq.ip = '10.10.10.1'
+  # this plugin runs 'hostname -I' on the guest machine to obtain
+  # the guest ip address. you could overwrite the ip here. optional.
+  # config.dnsmasq.ip = '192.168.59.100'
 
 end
