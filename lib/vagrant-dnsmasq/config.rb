@@ -29,14 +29,14 @@ module Vagrant
         # make it a Domain instance
         begin
           @domain = Domain.new @domain 
-        rescue=>e
+        rescue => e
           raise Vagrant::Errors::VagrantError, e.message
         end
         
         # make it an Ip instance
         puts @ip.class
         @ip = [@ip] unless @ip.is_a? Array
-        @ip.map!{|ip| begin Ip.new(ip) rescue=>e raise Vagrant::Errors::VagrantError, e.message end}.compact!
+        @ip.map!{|ip| begin Ip.new(ip); rescue => e; raise Vagrant::Errors::VagrantError, e.message end}.compact!
       end
 
       def validate(machine)
@@ -45,12 +45,12 @@ module Vagrant
         # verify domain
         begin
           @domain = Domain.new @domain 
-        rescue=>e
+        rescue => e
           errors << e.message
         end
 
         # verify ip
-        @ip.map{|ip| begin Ip.new(ip) rescue=>e errors << e.message end}
+        @ip.map{|ip| begin Ip.new(ip); rescue => e; errors << I18n.t('vagrant_dnsmasq.config.invalid_ip', {:ipv4 => ip}) end}
 
         # verify resolver
         if @resolver
