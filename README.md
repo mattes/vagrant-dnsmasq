@@ -1,5 +1,4 @@
-vagrant-dnsmasq
-===============
+# vagrant-dnsmasq [![Build Status](https://travis-ci.org/mattes/vagrant-dnsmasq.png?branch=master)](https://travis-ci.org/mattes/vagrant-dnsmasq)
 
 A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system.
 
