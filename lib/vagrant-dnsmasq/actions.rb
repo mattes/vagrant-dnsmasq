@@ -55,47 +55,13 @@ module Vagrant
             resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
             resolver.insert(@machine.config.dnsmasq.domain, use_ip)
 
-            env[:ui].info "Dnsmasq handler set IP '#{use_ip}'"
+            env[:ui].success "Dnsmasq handler set IP '#{use_ip}' for domain '#{@machine.config.dnsmasq.domain.dotted}'"
 
           else
             env[:ui].warn "Dnsmasq handler was not able to determine an IP address"
           end
 
-
           @app.call(env)
-
-
-
-          # # overwrite ip with value from config?
-          # @ip = @machine.config.dnsmasq.ip if @machine.config.dnsmasq.ip.count > 0
-          # 
-          # 
-          # # ... or try to fetch it from guest system
-          # if @ip.count === 0
-          #   @machine.communicate.sudo("hostname -I") do |type, data| 
-          #     @ip = data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
-          #   end
-          #   @ip.map!{|ip| begin Ip.new(ip) rescue nil end}.compact!
-          # end
-# 
-          # # is there a ip?
-          # if @ip.count > 0
-# 
-          #   # update dnsmasq.conf
-          #   dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqConf)
-          #   @ip.each do |ip|
-          #     dnsmasq.insert(@machine.config.dnsmasq.domain, ip)
-          #   end
-          #   
-          #   # update /etc/resolver
-          #   resolver = Resolver.new(@machine.config.dnsmasq.resolver)
-          #   @ip.each do |ip|
-          #     resolver.insert(@machine.config.dnsmasq.domain, ip)
-          #   end
-# 
-          #   env[:ui].info "Added domain #{@machine.config.dnsmasq.domain} for IP #{@ip}"
-          #   @app.call(env)
-          # end
         end
       end
     end
@@ -104,11 +70,26 @@ module Vagrant
     class Destroy
       def initialize(app, env)
         @app = app
+        @machine = env[:machine]
       end
 
       def call(env)
-        # @todo delete from dnsmasq.conf and /etc/resolver
-        @app.call(env)
+        if @machine.config.dnsmasq.enabled?
+
+          # remove records from dnsmasq.conf and /etc/resolver
+
+          # update dnsmasq.conf
+          dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf)
+          dnsmasq.delete(@machine.config.dnsmasq.domain)
+
+          # update /etc/resolver
+          resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
+          resolver.delete(@machine.config.dnsmasq.domain)
+
+          env[:ui].success "Dnsmasq handler removed domain '#{@machine.config.dnsmasq.domain}'"
+
+          @app.call(env)
+        end
       end
     end
 
