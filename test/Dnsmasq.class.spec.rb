@@ -1,4 +1,4 @@
-require './lib/vagrant-dnsmasq/includes/Dnsmasq.class.rb'
+require './lib/vagrant-dnsmasq/includes/DnsmasqConf.class.rb'
 require './lib/vagrant-dnsmasq/includes/Domain.class.rb'
 require './lib/vagrant-dnsmasq/includes/Ip.class.rb'
 
@@ -7,7 +7,7 @@ random = (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
 describe "At first" do
   it "should fail if there is no conf file" do
   expect {
-    Dnsmasq.new("/tmp/some-non-existing-file-#{random}-h25hch345b3k5")
+    DnsmasqConf.new("/tmp/some-non-existing-file-#{random}-h25hch345b3k5")
   }.to raise_error IOError
   end
 end
@@ -15,17 +15,18 @@ end
 
 describe DnsmasqConf do
   before(:each) do
-    System2.new("touch /tmp/dnsmasq-conf-#{random}").rife
-    @dnsm = Dnsmasq.new("/tmp/dnsmasq-conf-#{random}")
+    system "touch /tmp/dnsmasq-conf-#{random}" 
+    @dnsm = DnsmasqConf.new("/tmp/dnsmasq-conf-#{random}")
     @domain = Domain.new('.foobar')
+    @ip = Ip.new('10.10.10.10')
   end
 
   after(:each) do
-    System2.new("rm /tmp/dnsmasq-conf-#{random}").rife if File.exists? "/tmp/dnsmasq-conf-#{random}"
+    system("rm /tmp/dnsmasq-conf-#{random}") if File.exists? "/tmp/dnsmasq-conf-#{random}"
   end
 
   it "should insert a domain" do
-    @dnsm.insert(@domain)
+    @dnsm.insert(@domain, @ip)
     @dnsm.includes?(@domain).should eq(true)
   end
 
@@ -35,7 +36,7 @@ describe DnsmasqConf do
 
   it "should delete a domain" do
     @dnsm.includes?(@domain).should eq(false)
-    @dnsm.insert(@domain)
+    @dnsm.insert(@domain, @ip)
     @dnsm.includes?(@domain).should eq(true)
     @dnsm.delete(@domain) 
     @dnsm.includes?(@domain).should eq(false)
@@ -43,7 +44,7 @@ describe DnsmasqConf do
 
   it "#insert should raise if domain is nil" do
     expect {
-      @dnsm.insert(nil)
+      @dnsm.insert(nil, nil)
     }.to raise_error ArgumentError
   end
 

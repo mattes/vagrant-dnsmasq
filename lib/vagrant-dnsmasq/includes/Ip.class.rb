@@ -10,7 +10,7 @@ class Ip
   end
 
   def self.ipv4_valid?(ipv4)
-    Ip::MATCH_IP4.match(ipv4)
+    if not ipv4.blank? and Ip::MATCH_IP4.match(ipv4) then true else false end
   end
 
   def v4

@@ -10,7 +10,7 @@ class Domain
       return
     end
 
-    raise ArgumentError, "no domain name given" unless name
+    raise ArgumentError, "no domain name given" if name.blank?
 
     # parse domain name ...
     name = name.to_s
@@ -21,7 +21,7 @@ class Domain
   end
 
   def self.valid?(name)
-    Domain::MATCH.match(name.downcase)
+    if not name.blank? and Domain::MATCH.match(name.downcase) then true else false end
   end
 
   def dotted

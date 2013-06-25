@@ -14,17 +14,18 @@ end
 
 describe Resolver do
   before(:each) do
-    System2.new("mkdir -p /tmp/resolver-dir-#{random}").rife
+    system("mkdir -p /tmp/resolver-dir-#{random}")
     @res = Resolver.new("/tmp/resolver-dir-#{random}")
     @domain = Domain.new('.foobar')
+    @ip = Ip.new('10.10.10.10')
   end
 
   after(:each) do
-    System2.new("rm -R /tmp/resolver-dir-#{random}").rife if File.exists? "/tmp/resolver-dir-#{random}"
+    system("rm -R /tmp/resolver-dir-#{random}") if File.exists? "/tmp/resolver-dir-#{random}"
   end
 
   it "should insert a domain" do
-    @res.insert(@domain)
+    @res.insert(@domain, @ip)
     @res.includes?(@domain).should eq(true)
   end
 
@@ -34,7 +35,7 @@ describe Resolver do
 
   it "should delete a domain" do
     @res.includes?(@domain).should eq(false)
-    @res.insert(@domain)
+    @res.insert(@domain, @ip)
     @res.includes?(@domain).should eq(true)
     @res.delete(@domain) 
     @res.includes?(@domain).should eq(false)
@@ -42,7 +43,7 @@ describe Resolver do
 
   it "#insert should raise if domain is nil" do
     expect {
-      @res.insert(nil)
+      @res.insert(nil, nil)
     }.to raise_error ArgumentError
   end
 
