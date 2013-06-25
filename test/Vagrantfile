@@ -23,5 +23,7 @@ Vagrant.configure('2') do |config|
   # this plugin runs 'hostname -I' on the guest machine to obtain
   # the guest ip address. you could overwrite the ip here. optional.
   # config.dnsmasq.ip = '192.168.59.100'
+  # config.dnsmasq.ip = {|guest| return ip string or array }
+
 
 end

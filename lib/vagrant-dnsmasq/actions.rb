@@ -3,13 +3,6 @@ module Vagrant
 
     class Up
       def initialize(app, env)
-        inc_path = Pathname.new(File.expand_path("../includes", __FILE__))
-        require inc_path.join("Domain.class.rb")
-        require inc_path.join("Ip.class.rb")
-        require inc_path.join("Dnsmasq.class.rb")
-        require inc_path.join("Resolver.class.rb")
-        require inc_path.join("helper.rb")
-
         @app = app
         @machine = env[:machine]
         @ip = []
@@ -59,13 +52,6 @@ module Vagrant
 
     class Destroy
       def initialize(app, env)
-        inc_path = Pathname.new(File.expand_path("../includes", __FILE__))
-        require inc_path.join("Domain.class.rb")
-        require inc_path.join("Ip.class.rb")
-        require inc_path.join("Dnsmasq.class.rb")
-        require inc_path.join("Resolver.class.rb")
-        require inc_path.join("helper.rb")
-
         @app = app
       end
 

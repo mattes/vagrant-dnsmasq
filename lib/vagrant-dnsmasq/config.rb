@@ -9,10 +9,6 @@ module Vagrant
       alias_method :enabled?, :enable
 
       def initialize
-        inc_path = Pathname.new(File.expand_path("../includes", __FILE__))
-        require inc_path.join("Domain.class.rb")
-        require inc_path.join("Ip.class.rb")
-
         @enable = UNSET_VALUE
         @domain = UNSET_VALUE
         @ip = UNSET_VALUE

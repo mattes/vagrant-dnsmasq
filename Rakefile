@@ -6,6 +6,11 @@ task :default do
   system 'rake -T'
 end
 
+desc "run tests"
+task :test do
+  system 'rspec test/*.spec.rb'
+end
+
 desc "tag this version and rake release"
 task :publish do
   lib = File.expand_path('../lib', __FILE__)

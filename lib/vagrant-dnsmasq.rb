@@ -4,13 +4,20 @@ module Vagrant
     class Plugin < Vagrant.plugin("2")
       name "vagrant-dnsmasq"
 
-      config "dnsmasq" do
-        require "vagrant-dnsmasq/config"
-        Config
-      end
-
       lib_path = Pathname.new(File.expand_path("../vagrant-dnsmasq", __FILE__))
       require lib_path.join("actions")
+
+      inc_path = Pathname.new(File.expand_path("../vagrant-dnsmasq/includes", __FILE__))
+      require inc_path.join("Domain.class.rb")
+      require inc_path.join("Ip.class.rb")
+      require inc_path.join("DnsmasqConf.class.rb")
+      require inc_path.join("Resolver.class.rb")
+      require inc_path.join("helper.rb")
+
+      config "dnsmasq" do
+        require lib_path.join("config")
+        Config
+      end
 
       action_hook(:dnsmasq, :machine_action_up) do |hook|
         hook.append(Vagrant::Action::Up)
