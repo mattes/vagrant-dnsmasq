@@ -45,6 +45,16 @@ module Vagrant
               use_ip = @ip[0]
             end
 
+            # use ip to update dnsmasq.conf and /etc/resolver
+
+            # update dnsmasq.conf
+            dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf)
+            dnsmasq.insert(@machine.config.dnsmasq.domain, use_ip)
+            
+            # update /etc/resolver
+            resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
+            resolver.insert(@machine.config.dnsmasq.domain, use_ip)
+
             env[:ui].info "Dnsmasq handler set IP '#{use_ip}'"
 
           else

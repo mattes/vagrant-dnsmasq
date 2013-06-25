@@ -6,8 +6,7 @@ class Domain
     @name = nil
 
     if name.is_a? Domain
-      @name = name.dotted
-      return
+      name = name.dotted
     end
 
     raise ArgumentError, "no domain name given" if name.blank?

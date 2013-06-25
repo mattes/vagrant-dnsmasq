@@ -12,6 +12,13 @@ describe Domain do
     Domain.new('.foobar').dotted.should eq('.foobar')
   end
 
+  it "should return valid domain if domain is passed" do
+    Domain.new(Domain.new('foobar')).name.should eq('foobar')
+    Domain.new(Domain.new('.foobar')).name.should eq('foobar')
+    Domain.new(Domain.new('foobar')).dotted.should eq('.foobar')
+    Domain.new(Domain.new('.foobar')).dotted.should eq('.foobar')
+  end
+
   it "should make the domain lowercase" do
     Domain.new('FOOBAR').name.should eq('foobar')
   end
