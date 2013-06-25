@@ -27,17 +27,13 @@ module Vagrant
           if @ip.count > 0
 
             # update dnsmasq.conf
-            brew_prefix = `brew --prefix`
-            brew_prefix.strip!
-            dnsmasq_conf_file = brew_prefix + "/etc/dnsmasq.conf"
-
-            dnsmasq = DnsmasqConf.new(dnsmasq_conf_file)
+            dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqConf)
             @ip.each do |ip|
               dnsmasq.insert(@machine.config.dnsmasq.domain, ip)
             end
             
             # update /etc/resolver
-            resolver = Resolver.new('/etc/resolver')
+            resolver = Resolver.new(@machine.config.dnsmasq.resolver)
             @ip.each do |ip|
               resolver.insert(@machine.config.dnsmasq.domain, ip)
             end

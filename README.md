@@ -17,16 +17,30 @@ in your Vagrantfile
 ```
 # dnsmasq ...
 
-# enable dnsmasq?
-# set to false or delete line to disable dnsmasq handling
-config.dnsmasq.enable = true
-
-# set domain ending
+# set domain ending (required)
+# adding this line enables dnsmasq handling
 config.dnsmasq.domain = '.dev'
 
+
+# optional configuration ...
+
 # this plugin runs 'hostname -I' on the guest machine to obtain
-# the guest ip address. you could overwrite the ip here. optional.
+# the guest ip address. you could overwrite this behaviour.
 # config.dnsmasq.ip = '192.168.59.100'
+# config.dnsmasq.ip = {|guest_machine| return ip string or array }
+
+# this will prompt you during 'vagrant up' to choose an IP
+# config.dnsmasq.ip = ['192.168.59.100', '192.168.59.103']
+
+# overwrite default location for /etc/resolver directory
+# config.dnsmasq.resolver = '/etc/resolver'
+
+# overwrite default location for /usr/local/etc/dnsmasq.conf
+# config.dnsmasq.dnsmasqconf = '/usr/local/etc/dnsmasq.conf'
+
+# disable dnsmasq handling
+# config.dnsmasq.disable = true
+
 ```
 
 ## Uninstall
