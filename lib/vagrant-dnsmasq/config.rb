@@ -17,13 +17,10 @@ module Vagrant
       end
 
       def finalize!
-        brew_prefix = `brew --prefix`
-        brew_prefix.strip!
-
         @domain = nil if @domain == UNSET_VALUE
         @ip = nil if @ip == UNSET_VALUE
         @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
-        @dnsmasqconf = brew_prefix + "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
+        @dnsmasqconf = "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
         @disable = false if @disable == UNSET_VALUE
       end
 

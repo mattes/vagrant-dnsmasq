@@ -43,7 +43,8 @@ config.dnsmasq.domain = '.dev'
 # config.dnsmasq.resolver = '/etc/resolver'
 
 # overwrite default location for /usr/local/etc/dnsmasq.conf
-# config.dnsmasq.dnsmasqconf = '/usr/local/etc/dnsmasq.conf'
+# brew_prefix = `brew --prefix`.strip
+# config.dnsmasq.dnsmasqconf = brew_prefix + '/etc/dnsmasq.conf'
 
 # disable dnsmasq handling
 # config.dnsmasq.disable = true
