@@ -4,6 +4,11 @@ class Ip
 
   def initialize(ipv4)
 
+    if ipv4.is_a? Ip
+      @ipv4 = ipv4.v4
+      return
+    end
+
     raise ArgumentError, "IPv4 '#{ipv4}' must match #{MATCH_IP4}" unless Ip::ipv4_valid?(ipv4)
 
     @ipv4 = ipv4

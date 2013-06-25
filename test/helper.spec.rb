@@ -21,7 +21,8 @@ describe Object do
     nil.blank?.should eq(true)
     [].blank?.should eq(true)
     false.blank?.should eq(true)
-    0.blank?.should eq(true)
+    
+    0.blank?.should eq(false)
 
     'foo'.blank?.should eq(false)
     [1].blank?.should eq(false)

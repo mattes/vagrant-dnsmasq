@@ -32,7 +32,6 @@ config.dnsmasq.domain = '.dev'
 # config.dnsmasq.ip = proc do |guest_machine| 
 #   guest_machine.communicate.sudo("command to obtain ip somehow") do |type, data| 
 #     # return something like '192.168.59.100' or ['192.168.59.100', '192.168.59.103']
-#     return data['ip']
 #   end
 # end
 

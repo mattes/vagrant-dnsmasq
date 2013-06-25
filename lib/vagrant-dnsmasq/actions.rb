@@ -10,15 +10,18 @@ module Vagrant
 
       def call(env)
         if @machine.config.dnsmasq.enabled?
-          env[:ui].info "Dnsmasq handler actived"
+          # env[:ui].info "Dnsmasq handler actived"
+
+          @ip = @machine.config.dnsmasq.ip
 
           # is a proc?
           if @ip.is_a? Proc
             ips = @ip.call(@machine)
             ips = [ips] unless ips.is_a? Array
-            @ip = ips.map{|ip| begin Ip.new(ip) rescue nil end}.compact! # dismiss invalid ips
+            ips.map!{|ip| begin Ip.new(ip) rescue nil end}.compact! # dismiss invalid ips
+            @ip = ips
           end
-
+          
           if @ip.is_a?(Array) && @ip.count > 0
             # @ip is an array with domain instances ...
 
@@ -30,7 +33,7 @@ module Vagrant
                 i = 0
                 @ip.each do |ip|
                   i += 1
-                  env[:ui].info "[#{i}] #{ip.v4}"
+                  env[:ui].info "(#{i}) #{ip.v4}"
                 end
                 env[:ui].info "Please type number [1-#{i}]: "
                 answer = $stdin.gets.strip.to_i - 1

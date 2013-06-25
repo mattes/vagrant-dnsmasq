@@ -14,15 +14,8 @@ def delete_line_from_file(filename, regex)
   tmp_file = nil
 end
 
-
-
 class Object
   def blank?
-    if self === true then return false
-    elsif self === false then return true
-    elsif self.is_a? Fixnum and self != 0 then return false
-    else
-      self.nil? || self === 0 || self.empty?
-    end
+    respond_to?(:empty?) ? empty? : !self
   end
 end

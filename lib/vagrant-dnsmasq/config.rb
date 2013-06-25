@@ -25,9 +25,11 @@ module Vagrant
         # default way to obtain ip address
         if @ip == UNSET_VALUE
           @ip = proc do |guest_machine| 
+            ips = nil
             guest_machine.communicate.sudo("hostname -I") do |type, data| 
-              return data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
+              ips = data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
             end
+            ips
           end
         end
 
@@ -49,17 +51,20 @@ module Vagrant
         begin @domain = Domain.new @domain; rescue => e; errors << e.message end
 
         # verify ip
-        if @ip.is_a? String
-          begin @ip = [Ip.new(@ip)]; rescue => e; errors << e.message end
-
-        elsif @ip.is_a? Array
+        if @ip.is_a? Array
           @ip.map!{|ip| begin Ip.new(ip); rescue => e; errors << e.message end}
+
+        elsif @ip.is_a? String
+          begin @ip = Ip.new(@ip); rescue => e; errors << e.message end
+          @ip = [@ip]
 
         elsif @ip.is_a? Proc
           # okay, there is nothing to verify at the moment
         else
           @ip = nil
         end        
+
+
 
         # verify resolver
         if @resolver

@@ -2,7 +2,7 @@ module Vagrant
   module Dnsmasq
     class Plugin < Vagrant.plugin("2")
       name "vagrant-dnsmasq"
-      desc "A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system."
+      description "A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system."
 
       lib_path = Pathname.new(File.expand_path("../vagrant-dnsmasq", __FILE__))
       require lib_path.join("actions")
