@@ -23,8 +23,8 @@ Vagrant.configure('2') do |config|
   # this plugin runs 'hostname -I' on the guest machine to obtain
   # the guest ip address. you could overwrite this behaviour.
   # config.dnsmasq.ip = '192.168.59.100'
-  
-  # config.dnsmasq.ip do |guest_machine| 
+
+  # config.dnsmasq.ip = proc do |guest_machine| 
   #   guest_machine.communicate.sudo("command to obtain ip somehow") do |type, data| 
   #     # return something like '192.168.59.100' or ['192.168.59.100', '192.168.59.103']
   #     return data['ip']

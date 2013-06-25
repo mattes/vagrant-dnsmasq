@@ -22,35 +22,38 @@ module Vagrant
 
         @domain = nil if @domain == UNSET_VALUE
         @ip = nil if @ip == UNSET_VALUE
-        @resolver = '/etc/resolvers' if @resolver == UNSET_VALUE
+        @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
         @dnsmasqconf = brew_prefix + "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
         @disable = false if @disable == UNSET_VALUE
+      end
 
-        # make it a Domain instance
-        begin
-          @domain = Domain.new @domain 
-        rescue => e
-          raise Vagrant::Errors::VagrantError, e.message
-        end
-        
-        # make it an Ip instance
-        puts @ip.class
-        @ip = [@ip] unless @ip.is_a? Array
-        @ip.map!{|ip| begin Ip.new(ip); rescue => e; raise Vagrant::Errors::VagrantError, e.message end}.compact!
+      def enabled?
+        not @disable and not @domain.nil?
       end
 
       def validate(machine)
+        return unless enabled?
+
         errors = []
 
+        # verify @disable
+        if @disable != true and @disable != false then errors << 'invalid disable setting' end
+
         # verify domain
-        begin
-          @domain = Domain.new @domain 
-        rescue => e
-          errors << e.message
-        end
+        begin @domain = Domain.new @domain; rescue => e; errors << e.message end
 
         # verify ip
-        @ip.map{|ip| begin Ip.new(ip); rescue => e; errors << I18n.t('vagrant_dnsmasq.config.invalid_ip', {:ipv4 => ip}) end}
+        if @ip.is_a? String
+          begin @ip = Ip.new(@ip); rescue => e; errors << e.message end
+
+        elsif @ip.is_a? Array
+          @ip.map!{|ip| begin Ip.new(ip); rescue => e; errors << e.message end}
+
+        elsif @ip.is_a? Proc
+          # okay, there is nothing to verify at the moment
+        else
+          @ip = nil
+        end        
 
         # verify resolver
         if @resolver
@@ -63,10 +66,6 @@ module Vagrant
         end 
 
         return { 'Dnsmasq configuration' => errors }
-      end
-
-      def enabled?
-        not @disable and not @domain.nil?
       end
 
     end

@@ -15,8 +15,6 @@ vagrant plugin install vagrant-dnsmasq
 ## Usage
 in your Vagrantfile
 ```
-# dnsmasq ...
-
 # set domain ending (required)
 # adding this line enables dnsmasq handling
 config.dnsmasq.domain = '.dev'
@@ -27,7 +25,13 @@ config.dnsmasq.domain = '.dev'
 # this plugin runs 'hostname -I' on the guest machine to obtain
 # the guest ip address. you could overwrite this behaviour.
 # config.dnsmasq.ip = '192.168.59.100'
-# config.dnsmasq.ip = {|guest_machine| return ip string or array }
+
+# config.dnsmasq.ip = proc do |guest_machine| 
+#   guest_machine.communicate.sudo("command to obtain ip somehow") do |type, data| 
+#     # return something like '192.168.59.100' or ['192.168.59.100', '192.168.59.103']
+#     return data['ip']
+#   end
+# end
 
 # this will prompt you during 'vagrant up' to choose an IP
 # config.dnsmasq.ip = ['192.168.59.100', '192.168.59.103']
@@ -40,7 +44,6 @@ config.dnsmasq.domain = '.dev'
 
 # disable dnsmasq handling
 # config.dnsmasq.disable = true
-
 ```
 
 ## Uninstall

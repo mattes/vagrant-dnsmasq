@@ -5,5 +5,5 @@ en:
       update_guest: "[%{name}] Updating /etc/hosts file..."
       update_host: "Updating /etc/hosts file on host machine (password may be required)..."
     config:
-      invalid_ip: "Ip %{ipv4} is not a valid ip"
+      invalid_ip: "IP '%{ipv4}' is not a valid ip"
       not_an_array_or_string: "A value for %{config_key} must be an Array or String, not type '%{is_class}'"

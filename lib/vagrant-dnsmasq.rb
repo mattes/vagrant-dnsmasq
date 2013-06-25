@@ -1,11 +1,10 @@
 module Vagrant
   module Dnsmasq
-    def self.source_root
-      @source_root ||= Pathname.new(File.expand_path('../../', __FILE__))
-    end
-
-    I18n.load_path << File.expand_path('locales/en.yml', source_root)
-    I18n.reload!
+    # def self.source_root
+    #   @source_root ||= Pathname.new(File.expand_path('../../', __FILE__))
+    # end
+    # I18n.load_path << File.expand_path('locales/en.yml', source_root)
+    # I18n.reload!
 
     class Plugin < Vagrant.plugin("2")
       name "vagrant-dnsmasq"
