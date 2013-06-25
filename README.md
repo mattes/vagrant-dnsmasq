@@ -26,7 +26,7 @@ config.dnsmasq.domain = '.dev'
 # optional configuration ...
 
 # this plugin runs 'hostname -I' on the guest machine to obtain
-# the guest ip address. you could overwrite this behaviour.
+# the guest ip address. you can overwrite this behaviour.
 # config.dnsmasq.ip = '192.168.59.100'
 
 # config.dnsmasq.ip = proc do |guest_machine| 
