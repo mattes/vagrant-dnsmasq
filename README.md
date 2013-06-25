@@ -3,9 +3,12 @@
 A Dnsmasq Vagrant plugin that manages the dnsmasq.conf file and /etc/resolver directory on your host system.
 
 ## Prerequisites
- * Mac OS X Mountain Lion
- * [brew](http://mxcl.github.io/homebrew/)
- * [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) ```brew install dnsmasq```
+ * [Vagrant](http://www.vagrantup.com)
+ * [Dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) 
+
+Easily install dnsmasq with [brew](http://mxcl.github.io/homebrew/) under Mac OS:
+ ```brew install dnsmasq```
+
 
 ## Installation
 ```
@@ -14,7 +17,7 @@ vagrant plugin install vagrant-dnsmasq
 
 ## Usage
 in your Vagrantfile
-```
+```ruby
 # set domain ending (required)
 # adding this line enables dnsmasq handling
 config.dnsmasq.domain = '.dev'
