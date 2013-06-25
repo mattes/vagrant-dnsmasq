@@ -10,7 +10,7 @@ class Resolver
   end
 
   def self.flush_cache!
-    system 'sudo dscacheutil -flushcache'
+    system 'sudo dscacheutil -flushcache' if @sudo
   end
 
   def list
