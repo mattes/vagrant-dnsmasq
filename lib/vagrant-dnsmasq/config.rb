@@ -18,10 +18,19 @@ module Vagrant
 
       def finalize!
         @domain = nil if @domain == UNSET_VALUE
-        @ip = nil if @ip == UNSET_VALUE
         @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
         @dnsmasqconf = "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
         @disable = false if @disable == UNSET_VALUE
+
+        # default way to obtain ip address
+        if @ip == UNSET_VALUE
+          @ip = proc do |guest_machine| 
+            guest_machine.communicate.sudo("hostname -I") do |type, data| 
+              return data.scan /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/
+            end
+          end
+        end
+
       end
 
       def enabled?
@@ -41,7 +50,7 @@ module Vagrant
 
         # verify ip
         if @ip.is_a? String
-          begin @ip = Ip.new(@ip); rescue => e; errors << e.message end
+          begin @ip = [Ip.new(@ip)]; rescue => e; errors << e.message end
 
         elsif @ip.is_a? Array
           @ip.map!{|ip| begin Ip.new(ip); rescue => e; errors << e.message end}
