@@ -5,6 +5,7 @@ module Vagrant
       attr_accessor :domain
       attr_accessor :ip
       attr_accessor :resolver
+      attr_accessor :keep_resolver_on_destroy
       attr_accessor :dnsmasqconf
       attr_accessor :disable
 
@@ -12,12 +13,14 @@ module Vagrant
         @domain = UNSET_VALUE
         @ip = UNSET_VALUE
         @resolver = UNSET_VALUE
+        @keep_resolver_on_destroy = UNSET_VALUE
         @dnsmasqconf = UNSET_VALUE
         @disable = UNSET_VALUE
       end
 
       def finalize!
         @domain = nil if @domain == UNSET_VALUE
+        @keep_resolver_on_destroy = false if @keep_resolver_on_destroy == UNSET_VALUE
         @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
         @dnsmasqconf = "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
         @disable = false if @disable == UNSET_VALUE
@@ -63,8 +66,6 @@ module Vagrant
         else
           @ip = nil
         end        
-
-
 
         # verify resolver
         if @resolver

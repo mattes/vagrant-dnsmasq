@@ -83,8 +83,10 @@ module Vagrant
           dnsmasq.delete(@machine.config.dnsmasq.domain)
 
           # update /etc/resolver
-          resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
-          resolver.delete(@machine.config.dnsmasq.domain)
+          unless @machine.config.dnsmasq.keep_resolver_on_destroy
+            resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
+            resolver.delete(@machine.config.dnsmasq.domain)
+          end
 
           env[:ui].success "Dnsmasq handler removed domain '#{@machine.config.dnsmasq.domain}'"
 

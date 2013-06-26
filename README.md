@@ -41,9 +41,12 @@ config.dnsmasq.domain = '.dev'
 # overwrite default location for /etc/resolver directory
 # config.dnsmasq.resolver = '/etc/resolver'
 
-# overwrite default location for /usr/local/etc/dnsmasq.conf
-# brew_prefix = `brew --prefix`.strip
-# config.dnsmasq.dnsmasqconf = brew_prefix + '/etc/dnsmasq.conf'
+# 'vagrant destroy' does not delete /etc/resolver nameserver file, defaults to false
+# config.dnsmasq.keep_resolver_on_destroy = true
+
+# overwrite default location for /etc/dnsmasq.conf
+brew_prefix = `brew --prefix`.strip
+config.dnsmasq.dnsmasqconf = brew_prefix + '/etc/dnsmasq.conf'
 
 # disable dnsmasq handling
 # config.dnsmasq.disable = true
