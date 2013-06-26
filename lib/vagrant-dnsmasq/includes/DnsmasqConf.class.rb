@@ -8,6 +8,19 @@ class DnsmasqConf
     @filename = filename
   end
 
+  def self.flush_cache!
+    begin
+      # restart dnsmasq (if installed with homebrew)
+      system "launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+      system "launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+
+      # @todo: call proc or try other fancy things to reload dnsmasq
+
+    rescue => e
+      # hmm ... i dont care
+    end
+  end
+
   def insert(domain, ip)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
     raise ArgumentError, 'invalid ip instance' unless ip.is_a? Ip
@@ -17,6 +30,8 @@ class DnsmasqConf
     File.open(@filename, 'a') { |file|
       file.write "\naddress=/#{domain.dotted}/#{ip.v4}"
     }
+
+    DnsmasqConf::flush_cache!
   end
 
   def includes?(domain)
@@ -32,6 +47,7 @@ class DnsmasqConf
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
     delete_line_from_file(@filename, Regexp.new("address=/\.#{domain.name}"))
+    DnsmasqConf::flush_cache!
   end
 
 
