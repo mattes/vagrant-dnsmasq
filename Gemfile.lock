@@ -15,7 +15,7 @@ GIT
 PATH
   remote: .
   specs:
-    vagrant-dnsmasq (0.0.7)
+    vagrant-dnsmasq (0.0.8)
 
 GEM
   remote: https://rubygems.org/
