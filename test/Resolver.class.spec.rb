@@ -41,6 +41,17 @@ describe Resolver do
     @res.includes?(@domain).should eq(false)
   end 
 
+  it "#includes? should verify content of domain file" do
+    @res.includes?(@domain).should eq(false)
+    @res.includes?(@domain, @ip).should eq(false)
+
+    @res.insert(@domain, @ip)
+
+    @res.includes?(@domain).should eq(true)
+    @res.includes?(@domain, @ip).should eq(true)
+    @res.includes?(@domain, Ip.new('10.10.10.11')).should eq(false)
+  end 
+
   it "#insert should raise if domain is nil" do
     expect {
       @res.insert(nil, nil)

@@ -19,13 +19,15 @@ class Resolver
 
   def insert(domain, ip)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
+    raise ArgumentError, 'invalid ip instance' unless ip.is_a? Ip
 
-    delete(domain) if includes?(domain)
+    unless includes?(domain, ip)
+      delete(domain) 
 
-    puts "You may be asked for your password to insert #{@dirname}/#{domain.name} (ip: #{ip})" if @sudo
-    system("#{'sudo' if @sudo} sh -c \"echo 'nameserver #{ip.v4}' >> #{@dirname}/#{domain.name}\"")
-    Resolver::flush_cache!
-
+      puts "You may be asked for your password to insert #{@dirname}/#{domain.name} (ip: #{ip})" if @sudo
+      system("#{'sudo' if @sudo} sh -c \"echo 'nameserver #{ip.v4}' >> #{@dirname}/#{domain.name}\"")
+      Resolver::flush_cache!
+    end
   end
 
   def delete(domain)
@@ -38,10 +40,15 @@ class Resolver
     end
   end
 
-  def includes?(domain)
+  def includes?(domain, with_ip = nil)
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
-    File.exists? "#{@dirname}/#{domain.name}"
+    unless with_ip.nil?
+      raise ArgumentError, 'invalid ip instance' unless with_ip.is_a? Ip
+      File.exists?("#{@dirname}/#{domain.name}") && IO.read("#{@dirname}/#{domain.name}").strip == "nameserver #{with_ip.v4}"
+    else
+      File.exists? "#{@dirname}/#{domain.name}"
+    end
   end
 
 end

@@ -10,7 +10,7 @@ module Vagrant
 
       def call(env)
         if @machine.config.dnsmasq.enabled?
-          # env[:ui].info "Dnsmasq handler actived"
+          env[:ui].info "Dnsmasq handler actived"
 
           @ip = @machine.config.dnsmasq.ip
 
@@ -53,7 +53,7 @@ module Vagrant
             
             # update /etc/resolver
             resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
-            resolver.insert(@machine.config.dnsmasq.domain, use_ip)
+            resolver.insert(@machine.config.dnsmasq.domain, Ip.new('127.0.0.1'))
 
             env[:ui].success "Dnsmasq handler set IP '#{use_ip}' for domain '#{@machine.config.dnsmasq.domain.dotted}'"
 
