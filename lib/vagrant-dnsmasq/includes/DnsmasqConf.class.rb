@@ -11,8 +11,10 @@ class DnsmasqConf
   def self.flush_cache!
     begin
       # restart dnsmasq (if installed with homebrew)
-      system "launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-      system "launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+
+      puts "You might be asked for your password to restart the dnsmasq daemon."
+      system "sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+      system "sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
 
       # @todo: call proc or try other fancy things to reload dnsmasq
 
@@ -25,13 +27,12 @@ class DnsmasqConf
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
     raise ArgumentError, 'invalid ip instance' unless ip.is_a? Ip
 
-    delete(domain) if includes?(domain)
-
-    File.open(@filename, 'a') { |file|
-      file.write "\naddress=/#{domain.dotted}/#{ip.v4}"
-    }
-
-    DnsmasqConf::flush_cache!
+    unless includes?(domain)
+      File.open(@filename, 'a') { |file|
+        file.write "\naddress=/#{domain.dotted}/#{ip.v4}"
+      }
+      DnsmasqConf::flush_cache!
+    end
   end
 
   def includes?(domain)
