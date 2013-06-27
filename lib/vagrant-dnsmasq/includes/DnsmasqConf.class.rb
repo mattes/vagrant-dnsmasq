@@ -12,9 +12,12 @@ class DnsmasqConf
     begin
       # restart dnsmasq (if installed with homebrew)
 
-      puts "You might be asked for your password to restart the dnsmasq daemon."
-      system "sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-      system "sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+
+      # hmm ... this seems to be useless?!
+      # puts "You might be asked for your password to restart the dnsmasq daemon."
+      # system "sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+      # system "sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
+
 
       # @todo: call proc or try other fancy things to reload dnsmasq
 
