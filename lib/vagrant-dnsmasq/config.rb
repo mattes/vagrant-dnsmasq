@@ -7,6 +7,7 @@ module Vagrant
       attr_accessor :resolver
       attr_accessor :keep_resolver_on_destroy
       attr_accessor :dnsmasqconf
+      attr_accessor :reload_command
       attr_accessor :disable
 
       def initialize
@@ -15,6 +16,7 @@ module Vagrant
         @resolver = UNSET_VALUE
         @keep_resolver_on_destroy = UNSET_VALUE
         @dnsmasqconf = UNSET_VALUE
+        @reload_command = UNSET_VALUE
         @disable = UNSET_VALUE
       end
 
@@ -23,6 +25,7 @@ module Vagrant
         @keep_resolver_on_destroy = false if @keep_resolver_on_destroy == UNSET_VALUE
         @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
         @dnsmasqconf = "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
+        @reload_command = nil if @reload_command == UNSET_VALUE
         @disable = false if @disable == UNSET_VALUE
 
         # default way to obtain ip address
