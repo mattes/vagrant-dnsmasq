@@ -7,7 +7,7 @@ random = (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
 describe "At first" do
   it "should fail if there is no conf file" do
   expect {
-    DnsmasqConf.new("/tmp/some-non-existing-file-#{random}-h25hch345b3k5")
+    DnsmasqConf.new("/tmp/some-non-existing-file-#{random}-h25hch345b3k5", nil)
   }.to raise_error IOError
   end
 end
@@ -16,7 +16,7 @@ end
 describe DnsmasqConf do
   before(:each) do
     system "touch /tmp/dnsmasq-conf-#{random}" 
-    @dnsm = DnsmasqConf.new("/tmp/dnsmasq-conf-#{random}")
+    @dnsm = DnsmasqConf.new("/tmp/dnsmasq-conf-#{random}", nil)
     @domain = Domain.new('.foobar')
     @ip = Ip.new('10.10.10.10')
   end

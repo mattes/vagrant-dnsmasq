@@ -48,6 +48,9 @@ config.dnsmasq.domain = '.dev'
 brew_prefix = `brew --prefix`.strip
 config.dnsmasq.dnsmasqconf = brew_prefix + '/etc/dnsmasq.conf'
 
+# command for reloading dnsmasq after config changes
+config.dnsmasq.reload_command = 'sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist; sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist'
+
 # disable dnsmasq handling
 # config.dnsmasq.disable = true
 ```

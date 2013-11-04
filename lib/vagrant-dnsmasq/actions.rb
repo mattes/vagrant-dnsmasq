@@ -48,7 +48,7 @@ module Vagrant
             # use ip to update dnsmasq.conf and /etc/resolver
 
             # update dnsmasq.conf
-            dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf)
+            dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf, @machine.config.dnsmasq.reload_command)
             dnsmasq.insert(@machine.config.dnsmasq.domain, use_ip)
             
             # update /etc/resolver
@@ -79,7 +79,7 @@ module Vagrant
           # remove records from dnsmasq.conf and /etc/resolver
 
           # update dnsmasq.conf
-          dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf)
+          dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf, @machine.config.dnsmasq.reload_command)
           dnsmasq.delete(@machine.config.dnsmasq.domain)
 
           # update /etc/resolver

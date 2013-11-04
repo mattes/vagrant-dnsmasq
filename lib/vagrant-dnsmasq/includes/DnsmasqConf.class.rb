@@ -1,28 +1,24 @@
 class DnsmasqConf
 
   attr_reader :filename
+  attr_reader :reload_command
 
-  def initialize(filename)
+  def initialize(filename, reload_command)
     raise ArgumentError, 'wrong filename' if filename.blank?
     raise IOError unless File.exists? filename
     @filename = filename
+    @reload_command = reload_command
   end
 
-  def self.flush_cache!
-    begin
-      # restart dnsmasq (if installed with homebrew)
-
-
-      # hmm ... this seems to be useless?!
-      # puts "You might be asked for your password to restart the dnsmasq daemon."
-      # system "sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-      # system "sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist"
-
-
-      # @todo: call proc or try other fancy things to reload dnsmasq
-
-    rescue => e
-      # hmm ... i dont care
+  def reload
+    if @reload_command
+      begin
+        # reload dnsmasq config if command specified
+        puts "You might be asked for your password to restart the dnsmasq daemon."
+        system @reload_command
+      rescue => e
+        # hmm ... i dont care
+      end
     end
   end
 
@@ -34,7 +30,7 @@ class DnsmasqConf
       File.open(@filename, 'a') { |file|
         file.write "\naddress=/#{domain.dotted}/#{ip.v4}"
       }
-      DnsmasqConf::flush_cache!
+      reload
     end
   end
 
@@ -51,7 +47,7 @@ class DnsmasqConf
     raise ArgumentError, 'invalid domain instance' unless domain.is_a? Domain
 
     delete_line_from_file(@filename, Regexp.new("address=/\.#{domain.name}"))
-    DnsmasqConf::flush_cache!
+    reload
   end
 
 
