@@ -1,4 +1,4 @@
 language: ruby
 rvm:
   - 2.0.0
-script: "rspec test/*.spec.rb"
+script: "bundle exec rspec test/*.spec.rb"
