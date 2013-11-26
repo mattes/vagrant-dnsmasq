@@ -1,6 +1,6 @@
 class Domain
 
-  MATCH = /^(\.?[a-z0-9]+)+$/
+  MATCH = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*$/
 
   def initialize(name)
     @name = nil
