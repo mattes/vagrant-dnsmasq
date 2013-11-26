@@ -11,6 +11,7 @@ describe Domain do
     Domain.new('.foo8ar').name.should eq('foo8ar')
     Domain.new('foo.8ar').name.should eq('foo.8ar')
     Domain.new('.foo.8ar').name.should eq('foo.8ar')
+    Domain.new('foo-bar').name.should eq('foo-bar')
   end
 
   it "should return dotted domain" do
@@ -22,6 +23,7 @@ describe Domain do
     Domain.new('.foo8ar').dotted.should eq('.foo8ar')
     Domain.new('foo.8ar').dotted.should eq('.foo.8ar')
     Domain.new('.foo.8ar').dotted.should eq('.foo.8ar')
+    Domain.new('foo-bar').dotted.should eq('.foo-bar')
   end
 
   it "should return valid domain if domain is passed" do
@@ -41,6 +43,7 @@ describe Domain do
     Domain.new(Domain.new('.foo.8ar')).name.should eq('foo.8ar')
     Domain.new(Domain.new('foo.8ar')).dotted.should eq('.foo.8ar')
     Domain.new(Domain.new('.foo.8ar')).dotted.should eq('.foo.8ar')
+    Domain.new(Domain.new('foo-bar')).name.should eq('foo-bar')
   end
 
   it "should make the domain lowercase" do
@@ -69,6 +72,10 @@ describe Domain do
     }.to raise_error ArgumentError
 
     expect {
+      Domain.new('-foo')
+    }.to raise_error ArgumentError
+
+    expect {
       Domain.new('foo-')
     }.to raise_error ArgumentError
 
@@ -87,6 +94,7 @@ describe Domain do
     Domain::valid?('foo..bar').should eq(false)
     Domain::valid?('foo_').should eq(false)
     Domain::valid?('foo.').should eq(false)
+    Domain::valid?('-foo').should eq(false)
     Domain::valid?('foo-').should eq(false)
     Domain::valid?('').should eq(false)
     Domain::valid?(nil).should eq(false)
