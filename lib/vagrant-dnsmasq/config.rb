@@ -21,7 +21,13 @@ module Vagrant
       end
 
       def finalize!
-        @domain = nil if @domain == UNSET_VALUE
+
+        if @domain == UNSET_VALUE 
+          @domain = nil
+        elsif !@domain.is_a?(Domain)
+          @domain = Domain.new @domain;
+        end
+        
         @keep_resolver_on_destroy = false if @keep_resolver_on_destroy == UNSET_VALUE
         @resolver = '/etc/resolver' if @resolver == UNSET_VALUE
         @dnsmasqconf = "/etc/dnsmasq.conf" if @dnsmasqconf == UNSET_VALUE
