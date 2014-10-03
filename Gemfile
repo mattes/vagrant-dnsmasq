@@ -6,4 +6,8 @@ group :development do
   gem 'vagrant', :git => 'git://github.com/mitchellh/vagrant.git', :tag => 'v1.2.2'
 end
 
+group :plugins do
+  gem "vagrant-dnsmasq", path: "."
+end
+
 gemspec
