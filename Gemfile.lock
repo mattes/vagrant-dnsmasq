@@ -16,6 +16,7 @@ PATH
   remote: .
   specs:
     vagrant-dnsmasq (0.1.1)
+      ffi (~> 1.9.5)
 
 GEM
   remote: https://rubygems.org/
@@ -24,7 +25,7 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     diff-lcs (1.2.5)
     erubis (2.7.0)
-    ffi (1.9.3)
+    ffi (1.9.5)
     i18n (0.6.11)
     json (1.7.7)
     log4r (1.1.10)
@@ -36,14 +37,14 @@ GEM
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
       rspec-mocks (~> 3.1.0)
-    rspec-core (3.1.4)
+    rspec-core (3.1.5)
       rspec-support (~> 3.1.0)
-    rspec-expectations (3.1.1)
+    rspec-expectations (3.1.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.1.0)
-    rspec-mocks (3.1.1)
+    rspec-mocks (3.1.2)
       rspec-support (~> 3.1.0)
-    rspec-support (3.1.0)
+    rspec-support (3.1.1)
 
 PLATFORMS
   ruby
