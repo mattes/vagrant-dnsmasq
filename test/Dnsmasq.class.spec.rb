@@ -19,6 +19,7 @@ describe DnsmasqConf do
     @dnsm = DnsmasqConf.new("/tmp/dnsmasq-conf-#{random}", nil)
     @domain = Domain.new('.foobar')
     @ip = Ip.new('10.10.10.10')
+    @new_ip = Ip.new('10.10.10.11')
   end
 
   after(:each) do
@@ -28,6 +29,19 @@ describe DnsmasqConf do
   it "should insert a domain" do
     @dnsm.insert(@domain, @ip)
     @dnsm.includes?(@domain).should eq(true)
+  end
+
+  it "should update a domain" do 
+    @dnsm.insert(@domain, @ip)
+    @dnsm.update(@domain, @new_ip)
+    domain_exists = begin 
+      found = false
+      File.open(@dnsm.filename, "r").each_line do |l|
+        found = true if Regexp.new("address=/\.#{@domain.name}/#{@new_ip.v4}").match(l.strip)
+      end
+      found
+    end
+    domain_exists.should eq(true)
   end
 
   it "should return false if no domain is found" do
