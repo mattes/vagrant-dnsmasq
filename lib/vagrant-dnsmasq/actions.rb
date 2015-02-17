@@ -49,12 +49,16 @@ module Vagrant
 
             # update dnsmasq.conf
             dnsmasq = DnsmasqConf.new(@machine.config.dnsmasq.dnsmasqconf, @machine.config.dnsmasq.reload_command)
-            dnsmasq.insert(@machine.config.dnsmasq.domain, use_ip)
-            
+            if dnsmasq.includes?(@machine.config.dnsmasq.domain)
+              dnsmasq.update(@machine.config.dnsmasq.domain, use_ip)
+            else
+              dnsmasq.insert(@machine.config.dnsmasq.domain, use_ip)
+            end
+
             # update /etc/resolver
             resolver = Resolver.new(@machine.config.dnsmasq.resolver, true) # true for sudo
             resolver.insert(@machine.config.dnsmasq.domain, Ip.new('127.0.0.1'))
-
+            
             env[:ui].success "Dnsmasq handler set IP '#{use_ip}' for domain '#{@machine.config.dnsmasq.domain.dotted}'"
 
           else
